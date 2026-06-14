@@ -70,8 +70,13 @@ Wenn ein Task zu komplex für direkte Ausführung ist, delegiere an einen Subage
 | Planung / Architektur-Entscheidung | `Plan` |
 | Inhaltsaudit / Quellenprüfung | `auditor` |
 | Semantik-Check (zwischen quick- und strict-Audit) | `semantik-check` |
+| Korrektorat / Form (Grammatik, Syntax, Rechtschreibung; inkl. Karussell + Social) | `korrektorat` |
 
 Ergebnis des Subagenten immer selbst ins Vault schreiben + im Thread berichten.
+
+**Prüfreihenfolge vor Veröffentlichung:** quick-Audit → Semantik-Check →
+Korrektorat → strict-Audit. Semantik-Check und Korrektorat decken auch
+Karussell- und Social-Post-Texte ab, nicht nur den Fließtext.
 
 ## Pflicht-Gate: Auditor
 

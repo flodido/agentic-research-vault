@@ -30,12 +30,16 @@ Auftrag
   → Recherche-Agent(en) (parallel)
   → quick-Audit (>= 85)         [REWORK-Schleife bis bestanden]
   → 1. Mensch: sichten & ändern
-  → Semantik-Check
+  → Semantik-Check (Bedeutung)  +  Korrektorat (Form)
   → 2. Mensch: Korrekturen abnicken
   → strict-Audit (>= 97)        [REWORK-Schleife bis bestanden]
   → 3. Mensch: finale Freigabe
   → Veröffentlichung
 ```
+
+Drei Prüfdimensionen, je ein eigener Agent: **Fakten** (Auditor), **Bedeutung**
+(Semantik-Check) und **Form** (Korrektorat). Semantik-Check und Korrektorat
+prüfen auch Karussell- und Social-Post-Texte, nicht nur den Fließtext.
 
 Eine erfundene Zahl oder eine Quelle, die die Aussage nicht trägt, blockiert die
 Freigabe in jedem Modus — unabhängig vom Score.
@@ -46,7 +50,8 @@ Freigabe in jedem Modus — unabhängig vom Score.
 prompts/
   dispatcher.md         Start-Prompt der koordinierenden Claude-Session
   auditor.md            Subagent: Faktencheck / Belegpflicht / Scoring
-  semantik-check.md     Subagent: semantische Präzision (kein Lektorat)
+  semantik-check.md     Subagent: semantische Präzision (Wortbedeutung)
+  korrektorat.md        Subagent: sprachliche Form (Grammatik/Syntax/Rechtschreibung)
   note-conventions.md   Frontmatter, Tags, Wikilinks, Fußnoten-Pflicht
 automation/
   dispatcher.sh         Eine Dispatcher-Runde (Slack lesen → Claude → Audit)
