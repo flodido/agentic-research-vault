@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Beispiel-LaunchAgent (macOS) für slack-listener.py.
+  Kopieren nach ~/Library/LaunchAgents/, Platzhalter <...> ersetzen, dann:
+    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.example.slack-listener.plist
+
+  WICHTIG: Der Listener liest seine Konfiguration AUSSCHLIESSLICH aus den
+  Umgebungsvariablen unten (nicht aus config.sh). Alle für das Routing nötigen
+  Werte müssen hier gesetzt sein, sonst baut der Listener keine Kanal-Routen.
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.example.slack-listener</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>/ABSOLUTER/PFAD/zu/agentic-research-vault/automation/slack-listener.py</string>
+    </array>
+    <key>KeepAlive</key>
+    <true/>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/ABSOLUTER/PFAD/zu/vault/_CONTROL/slack-listener.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>/ABSOLUTER/PFAD/zu/vault/_CONTROL/slack-listener.err.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>HOME</key>
+        <string>/Users/DEINUSER</string>
+        <key>PATH</key>
+        <string>/Users/DEINUSER/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+        <key>CONTROL_DIR</key>
+        <string>/ABSOLUTER/PFAD/zu/vault/_CONTROL</string>
+        <key>DISPATCHER_CHANNEL</key>
+        <string>C_DISPATCHER_ID</string>
+        <key>BLOG_CHANNEL</key>
+        <string>C_BLOG_ID</string>
+        <key>SLACK_SIGNING_SECRET</key>
+        <string>DEIN_SLACK_SIGNING_SECRET</string>
+        <!-- Optionaler Zusatzkanal:
+        <key>EXTRA_CHANNEL</key>
+        <string>C_EXTRA_ID</string>
+        <key>EXTRA_DIR</key>
+        <string>/pfad/zur/companion-app</string>
+        -->
+    </dict>
+</dict>
+</plist>

@@ -1,7 +1,14 @@
+---
+name: semantik-check
+description: Prüft einen Artikel auf semantische Korrektheit — falsche Fachbegriffe, Anglizismen mit Bedeutungsverschiebung, semantisch überladene Wörter und Bedeutungsunschärfen. Kein Lektorat, kein Faktcheck. Wird zwischen quick- und strict-Audit eingesetzt.
+tools: Read, Grep
+---
+
 # Semantik-Check Prompt
 
-Verwendung: Der Dispatcher spawnt einen general-purpose Subagenten mit diesem Prompt
-nach dem quick-Audit, vor dem strict-Audit.
+Verwendung: Der Dispatcher spawnt diesen Subagenten nach dem quick-Audit, vor dem
+strict-Audit. Als Claude-Code-Subagent installierbar (Datei nach `.claude/agents/`
+kopieren); das Frontmatter oben macht ihn unter dem Namen `semantik-check` aufrufbar.
 
 ---
 

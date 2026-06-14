@@ -52,7 +52,23 @@ automation/
   dispatcher.sh         Eine Dispatcher-Runde (Slack lesen → Claude → Audit)
   slack-listener.py     Webhook-Listener (triggert dispatcher.sh)
   config.example.sh     Konfigurationsvorlage (nach config.sh kopieren)
+  examples/
+    com.example.slack-listener.plist   Beispiel-LaunchAgent (macOS)
 ```
+
+## Zwei Konfigurationswege — wichtig zu verstehen
+
+Das System hat **zwei Prozesse mit getrennter Konfiguration**:
+
+- **`dispatcher.sh`** sourct `automation/config.sh` (Bash-Variablen).
+- **`slack-listener.py`** liest **ausschließlich Umgebungsvariablen**
+  (`DISPATCHER_CHANNEL`, `BLOG_CHANNEL`, `CONTROL_DIR`, `SLACK_SIGNING_SECRET`,
+  optional `EXTRA_CHANNEL`/`EXTRA_DIR`). Ohne diese Env-Variablen baut der
+  Listener keine Kanal-Routen und tut nichts.
+
+Setze die Listener-Variablen dort, wo der Listener läuft — am einfachsten im
+`EnvironmentVariables`-Block des LaunchAgents
+(siehe `automation/examples/com.example.slack-listener.plist`).
 
 ## Audit-Modi & Schwellen
 
@@ -64,29 +80,84 @@ automation/
 
 Veröffentlichungs-/High-Stakes-Inhalte werden automatisch auf `strict` hochgestuft.
 
-## Setup (Kurzfassung)
+## Setup (Schritt für Schritt)
 
-1. **Voraussetzungen:** Claude Code CLI, Python 3, ein Slack-Bot mit
-   `chat:write`, `reactions:write`, `channels:history` und Event Subscriptions.
-2. **Konfiguration:**
-   ```bash
-   cp automation/config.example.sh automation/config.sh
-   # config.sh mit echten Channel-/User-IDs und Pfaden füllen
-   export SLACK_BOT_TOKEN="xoxb-..."        # z. B. in ~/.zshrc
-   export SLACK_SIGNING_SECRET="..."        # für den Webhook-Listener
-   ```
-3. **Prompts** in die Claude-Agents-Konfiguration übernehmen
-   (`auditor.md` und `semantik-check.md` als Subagenten, `dispatcher.md` als
-   Start-Prompt der Dispatcher-Session).
-4. **Betrieb:** `slack-listener.py` permanent laufen lassen (LaunchAgent/systemd);
-   er triggert `dispatcher.sh` pro eingehender Nachricht.
+### 1. Voraussetzungen
+
+- [Claude Code CLI](https://claude.com/claude-code) installiert und eingeloggt
+- Python 3 (nur Standardbibliothek nötig) und `curl`
+- Ein Slack-Bot mit den Scopes `chat:write`, `reactions:write`,
+  `channels:history`, `groups:history` und aktivierten **Event Subscriptions**
+  (Event `message.channels` / `message.groups`)
+- Ein **öffentlich erreichbarer HTTPS-Endpunkt**, der auf den Listener-Port
+  (Standard `9877`) zeigt — Slack muss den Webhook erreichen. In der Praxis ein
+  Tunnel wie Cloudflare Tunnel, ngrok oder Tailscale Funnel. Die Request-URL in
+  der Slack-App ist dann `https://<dein-host>/slack/events`.
+
+### 2. Vault & Verzeichnisse
+
+```bash
+# Vault-Wurzel und Steuerverzeichnis anlegen (Pfad frei wählbar)
+mkdir -p "$HOME/Vault/_CONTROL"
+```
+
+`dispatcher.sh` legt darin Log-, Lock- und State-Dateien an — der Ordner muss
+vorher existieren.
+
+### 3. Konfiguration
+
+```bash
+cp automation/config.example.sh automation/config.sh
+# config.sh mit echten Channel-/User-IDs und VAULT-Pfad füllen
+chmod +x automation/dispatcher.sh
+
+# Secrets in die Umgebung (z. B. ~/.zshrc):
+export SLACK_BOT_TOKEN="xoxb-..."       # nutzt dispatcher.sh
+export SLACK_SIGNING_SECRET="..."       # nutzt slack-listener.py
+```
+
+### 4. Subagenten installieren
+
+Kopiere die Prompt-Dateien in dein Claude-Agents-Verzeichnis (projekt- oder
+benutzerweit), z. B.:
+
+```bash
+mkdir -p .claude/agents
+cp prompts/auditor.md prompts/semantik-check.md .claude/agents/
+```
+
+Beide Dateien tragen YAML-Frontmatter (`name`, `description`, `tools`) und sind
+damit als Subagenten `auditor` bzw. `semantik-check` aufrufbar. `dispatcher.md`
+dient als Start-Prompt der koordinierenden Dispatcher-Session, `note-conventions.md`
+als Referenz für das Notizformat.
+
+### 5. Listener dauerhaft betreiben
+
+`slack-listener.py` muss permanent laufen und seine Konfiguration über
+**Umgebungsvariablen** bekommen (siehe Abschnitt „Zwei Konfigurationswege").
+Auf macOS am einfachsten per LaunchAgent:
+
+```bash
+cp automation/examples/com.example.slack-listener.plist \
+   ~/Library/LaunchAgents/com.example.slack-listener.plist
+# Platzhalter (<PFAD>, IDs, Secret) in der plist ersetzen, dann:
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.example.slack-listener.plist
+```
+
+Der Listener triggert `dispatcher.sh` pro eingehender Nachricht. Zum Testen ohne
+Slack lässt sich eine Runde auch manuell starten: `bash automation/dispatcher.sh`.
 
 ## Sicherheitshinweise
 
 - `automation/config.sh` ist gitigniert und enthält IDs/Pfade — niemals committen.
-- Tokens kommen aus der Umgebung, nie aus dem Repo.
+- Tokens und das Signing Secret kommen aus der Umgebung, nie aus dem Repo.
+- Der Listener verifiziert die Slack-Signatur, sofern `SLACK_SIGNING_SECRET`
+  gesetzt ist — im Produktivbetrieb immer setzen.
 - Der Dispatcher verarbeitet ausschließlich Nachrichten des einen konfigurierten
   `ALLOWED_USER`.
+- `dispatcher.sh` startet Claude mit `--permission-mode bypassPermissions`. Das
+  ist für autonomen Betrieb gedacht — nur in einer Umgebung verwenden, der du
+  vertraust.
 
 ## Lizenz
 
