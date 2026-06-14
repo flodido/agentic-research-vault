@@ -173,7 +173,12 @@ Der Ablauf trennt bewusst drei menschliche Freigaben:
    **quick-Audit (≥ 85)**; bei REWORK nachbessern.
 4. **Präsentation** des Entwurfs (mit quick-Score) im Thread UND als `.md` im Vault.
 5. **① Inhaltliche Freigabe per ✅** durch den Nutzer.
-6. **② strict-Audit (≥ 97)** als zweites Gate vor Veröffentlichung; nichts
+5a. **Semantik-Check** (`semantik-check`) über Fließtext + Karussell + Social —
+   Wortbedeutung; Funde im Thread, Nutzer bestätigt/korrigiert.
+5b. **Korrektorat** (`korrektorat`) über Fließtext + Karussell + Social —
+   sprachliche Form (Grammatik/Syntax/Rechtschreibung); Funde im Thread, Nutzer
+   nickt ab.
+6. **② strict-Audit (≥ 97)** als letztes Gate vor Veröffentlichung; nichts
    veröffentlichen, solange die Schwelle nicht erreicht ist.
 7. **③ Explizite Veröffentlichungs-Bestätigung** durch den Nutzer (eigener Schritt).
 8. **Commit/Push nur nach expliziter Bestätigung** — niemals automatisch.
