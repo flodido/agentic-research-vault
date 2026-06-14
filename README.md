@@ -159,6 +159,35 @@ Slack lässt sich eine Runde auch manuell starten: `bash automation/dispatcher.s
   ist für autonomen Betrieb gedacht — nur in einer Umgebung verwenden, der du
   vertraust.
 
+## Anpassbarkeit — auch ohne Slack
+
+Der **Kern** dieses Frameworks ist der Qualitätsprozess, nicht der Transportweg:
+
+```
+Recherche (Agent) → quick-Audit → Mensch → Semantik-Check → Mensch → strict-Audit → Mensch → Veröffentlichung
+```
+
+Dieser Kern steckt in den **Prompts** (`prompts/`) und ist von Slack unabhängig.
+Die `automation/` ist nur die mitgelieferte *Eingangs- und Freigabe-Schicht* —
+hier zufällig über Slack.
+
+Wer keinen Slack-Workspace nutzt, ersetzt die Transport-Schicht und behält den
+Rest:
+
+- **Ganz ohne Automatisierung:** Die Prompts direkt in einer Claude-Code-Session
+  verwenden. Aufträge tippst du selbst, Freigaben gibst du im Dialog. Es braucht
+  dann weder `dispatcher.sh`, `slack-listener.py` noch einen Tunnel.
+- **Anderer Kanal:** `slack-listener.py` durch einen eigenen Eingang ersetzen
+  (z. B. ein Telegram-Bot, eine E-Mail-Mailbox, ein Datei-Watcher auf einem
+  `_INBOX/`-Ordner, ein simples Web-Formular). Erwartet wird nur: einen Auftrag
+  entgegennehmen → `dispatcher.sh` (oder direkt Claude) anstoßen → Ergebnis/Frei-
+  gabe zurückspielen.
+- **Andere Freigabe-Geste:** Statt Slack-Reaktionen (✅/📝/❌) eine beliebige
+  bestätigende Eingabe — die drei menschlichen Freigabepunkte bleiben gleich.
+
+Die Slack-spezifischen Teile sind bewusst auf `automation/` konzentriert; an den
+Prompts musst du dafür nichts ändern.
+
 ## Lizenz
 
 MIT — siehe [LICENSE](LICENSE).
