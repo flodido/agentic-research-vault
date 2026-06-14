@@ -154,7 +154,7 @@ Slack lässt sich eine Runde auch manuell starten: `bash automation/dispatcher.s
 
 ## Sicherheitshinweise
 
-- `automation/config.sh` ist gitigniert und enthält IDs/Pfade — niemals committen.
+- `automation/config.sh` ist gitignored und enthält IDs/Pfade — niemals committen.
 - Tokens und das Signing Secret kommen aus der Umgebung, nie aus dem Repo.
 - Der Listener verifiziert die Slack-Signatur, sofern `SLACK_SIGNING_SECRET`
   gesetzt ist — im Produktivbetrieb immer setzen.
