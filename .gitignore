@@ -1,0 +1,23 @@
+# Lokale Konfiguration mit echten IDs/Pfaden — NIEMALS committen
+automation/config.sh
+
+# Secrets
+*.token
+*.secret
+.env
+token.json
+credentials.json
+
+# Runtime / State
+*.log
+*.lock
+DISPATCHER-STOP
+DISPATCHER-LAST-SEEN-MAIN-TS
+*-RUNNING.lock
+
+# OS / Editor
+.DS_Store
+.obsidian/
+__pycache__/
+*.pyc
+.venv/
