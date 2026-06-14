@@ -1,9 +1,10 @@
-# BrainVault Framework
+# Agentic Research Vault
 
-Ein prüfbarer KI-Recherche- und Audit-Workflow für einen persönlichen
-Wissensspeicher (Obsidian-Vault). Aufträge kommen über Slack herein, Claude
-recherchiert und schreibt Notizen, und **kein Text gilt als fertig, bevor er ein
-Audit-Gate bestanden hat und ein Mensch ihn freigegeben hat.**
+Ein prüfbarer, agentischer KI-Recherche- und Audit-Workflow für einen persönlichen
+Wissensspeicher (Obsidian-Vault). Aufträge kommen über Slack herein, ein oder
+mehrere Agenten recherchieren parallel und schreiben Notizen, und **kein Text gilt
+als fertig, bevor er ein Audit-Gate bestanden hat und ein Mensch ihn freigegeben
+hat.**
 
 > Dies ist eine Referenz-Implementierung („as-is", keine Garantie, kein
 > Support-Versprechen). Sie zeigt das Verfahren, das hinter meinen Recherche-
