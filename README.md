@@ -10,6 +10,14 @@ hat.**
 > Support-Versprechen). Sie zeigt das Verfahren, das hinter meinen Recherche-
 > und Blog-Texten steht. Anpassung an die eigene Umgebung wird erwartet.
 
+> **Hintergrund/Herkunft:** Dieses Repository ist ein bereinigter Auszug aus
+> einem System, das ich produktiv betreibe (mein Obsidian-Wissensspeicher mit
+> Slack-Anbindung). Es wurde als Schnappschuss extrahiert und veröffentlicht –
+> deshalb beginnt die Git-Historie an einem einzigen Tag. Es ist also kein
+> frisch zusammengestelltes Demo-Projekt, sondern ein dokumentierter Ausschnitt
+> eines laufenden Workflows, von persönlichen Daten (Slack-IDs, Pfade, Tokens)
+> befreit.
+
 ## Idee
 
 Die zentrale Frage ist nicht „halluziniert die KI?", sondern: *Woran erkenne ich,
