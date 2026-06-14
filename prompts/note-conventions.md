@@ -181,6 +181,16 @@ audit:
 [^quelle-1]: Quelle, Abschnitt, URL oder lokaler Pfad, abgerufen am YYYY-MM-DD.
 ```
 
+## Typografie
+
+Fuer veroeffentlichungsrelevante deutsche Texte (Artikel, Karussell, Social-Posts):
+
+- **Kein Geviertstrich „—" (em-dash, U+2014)** – gilt als KI-Marker. Als
+  Gedankenstrich den **En-Dash „–" (U+2013) mit Leerzeichen** verwenden
+  („Wort – Wort").
+- Wort-Bindestriche bleiben „-" (z. B. „Audit-Gate", „KI-Recherche").
+- Minuszeichen „−" (U+2212) nur fuer Zahlen/Scores („−20 bis −60").
+
 ## Anwendung durch Agenten
 
 Dispatcher und Subagenten sollen diese Konvention verwenden, wenn sie neue
